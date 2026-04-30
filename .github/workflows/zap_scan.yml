@@ -9,12 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     name: Scan Juice Shop preview instance on Heroku
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+        with:
+          egress-policy: audit
+
       - name: Check out Git repository
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f #v2: v2.3.4 available
         with:
           ref: develop
       - name: ZAP Scan
-        uses: zaproxy/action-baseline@v0.3.0
+        uses: zaproxy/action-baseline@3f53f375845c0b410cb54dde95f77516fc4fcf4c # v0.3.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: 'https://preview.owasp-juice.shop'
