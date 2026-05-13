@@ -11,6 +11,11 @@ jobs:
     if: github.repository == 'juice-shop/juice-shop'
     runs-on: ubuntu-latest
     steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+      with:
+        egress-policy: audit
+
     - name: Check out Git repository
       uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f #v2: v2.3.4 available
       with:
@@ -22,7 +27,7 @@ jobs:
         cd _data/
         rm challenges.yml
         wget https://raw.githubusercontent.com/juice-shop/juice-shop/master/data/static/challenges.yml
-    - uses: stefanzweifel/git-auto-commit-action@v4.0.0
+    - uses: stefanzweifel/git-auto-commit-action@09d175379e84a3f3276b0168ee5890e96c554838 # v4.0.0
       with:
         commit_message: "Auto-update challenges.yml from ${{ github.sha }}"
         branch: master
